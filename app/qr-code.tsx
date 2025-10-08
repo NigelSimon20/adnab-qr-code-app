@@ -20,58 +20,44 @@ export default function QRCodeScreen() {
   }
 
   return (
-    <View style={styles.outerContainer}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.logoBox}>
-            <Text style={styles.logoText}>ADNAB{'\n'}LOGO</Text>
-          </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.logoBox}>
+          <Text style={styles.logoText}>ADNAB{'\n'}LOGO</Text>
+        </View>
 
-          <TouchableOpacity style={styles.notificationButton}>
-            <Ionicons name="notifications" size={24} color="#000" />
-            <View style={styles.badge} />
+        <TouchableOpacity style={styles.notificationButton}>
+          <Ionicons name="notifications" size={24} color="#000" />
+          <View style={styles.badge} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.content}>
+        <Text style={styles.title}>{user.name}'s QR Code</Text>
+
+        <View style={styles.qrContainer}>
+          <QRCode value={user.qrData} size={240} />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={regenerateQR}>
+            <Text style={styles.buttonText}>Request new</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+            <Ionicons name="log-out" size={18} color="#000" style={styles.buttonIcon} />
+            <Text style={styles.buttonText}>Sign out</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.content}>
-          <Text style={styles.title}>{user.name}'s QR Code</Text>
-
-          <View style={styles.qrContainer}>
-            <QRCode value={user.qrData} size={240} />
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={regenerateQR}>
-              <Text style={styles.buttonText}>Request new</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-              <Ionicons name="log-out" size={18} color="#000" style={styles.buttonIcon} />
-              <Text style={styles.buttonText}>Sign out</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   container: {
-    width: '100%',
-    maxWidth: 400,
-    height: '95%',
+    flex: 1,
     backgroundColor: '#fff',
-    borderRadius: 32,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    overflow: 'hidden',
   },
   header: {
     flexDirection: 'row',
