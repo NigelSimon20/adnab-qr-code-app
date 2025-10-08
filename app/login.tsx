@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -43,7 +44,7 @@ export default function LoginScreen() {
         <View style={styles.content}>
           <View style={styles.header}>
             <View style={styles.iconContainer}>
-              <Ionicons name="log-in-outline" size={48} color="#000" />
+              <Image source={require('../assets/images/logo.png')} style={styles.logoImage} />
             </View>
             <Text style={styles.title}>Welcome</Text>
             <Text style={styles.subtitle}>Enter your name to continue</Text>
@@ -105,6 +106,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
+  },
+  logoImage: {
+    width: 64,
+    height: 64,
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 32,

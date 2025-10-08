@@ -2,7 +2,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -23,7 +23,7 @@ export default function QRCodeScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.logoBox}>
-          <Text style={styles.logoText}>ADNAB{'\n'}LOGO</Text>
+          <Image source={require('../assets/images/logo.png')} style={styles.logoImage} />
         </View>
 
         <TouchableOpacity style={styles.notificationButton} onPress={() => router.push('/notifications')}>
@@ -40,7 +40,7 @@ export default function QRCodeScreen() {
         <Text style={styles.title}>{user.name}'s QR Code</Text>
 
         <TouchableOpacity style={styles.qrContainer} onPress={() => router.push('/qr-modal')}>
-          <QRCode value={user.qrData} size={240} />
+          <QRCode value={user.qrData} size={280} />
         </TouchableOpacity>
 
         <View style={styles.buttonContainer}>
@@ -72,18 +72,13 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   logoBox: {
-    borderWidth: 2,
-    borderColor: '#000',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderRadius: 8,
   },
-  logoText: {
-    fontSize: 12,
-    fontWeight: '700' as const,
-    color: '#000',
-    textAlign: 'center',
-    lineHeight: 16,
+  logoImage: {
+    width: 40,
+    height: 40,
+    resizeMode: 'contain',
   },
   notificationButton: {
     position: 'relative',
@@ -111,13 +106,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 24,
-    paddingTop: 32,
+    paddingTop: 80,
   },
   title: {
     fontSize: 28,
     fontWeight: '600' as const,
     color: '#000',
-    marginBottom: 48,
+    marginBottom: 24,
   },
   qrContainer: {
     padding: 24,
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
-    marginBottom: 48,
+    marginBottom: 24,
   },
   buttonContainer: {
     width: '100%',
