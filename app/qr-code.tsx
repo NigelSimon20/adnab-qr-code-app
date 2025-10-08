@@ -7,7 +7,7 @@ import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function QRCodeScreen() {
-  const { user, logout, regenerateQR } = useAuth();
+  const { user, logout, regenerateQR, unreadNotificationsCount } = useAuth();
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -26,9 +26,13 @@ export default function QRCodeScreen() {
           <Text style={styles.logoText}>ADNAB{'\n'}LOGO</Text>
         </View>
 
-        <TouchableOpacity style={styles.notificationButton}>
+        <TouchableOpacity style={styles.notificationButton} onPress={() => router.push('/notifications')}>
           <Ionicons name="notifications" size={24} color="#000" />
-          <View style={styles.badge} />
+          {unreadNotificationsCount > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{unreadNotificationsCount}</Text>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -87,14 +91,21 @@ const styles = StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    top: 8,
-    right: 8,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    top: 6,
+    right: 6,
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
     backgroundColor: '#ff3b30',
     borderWidth: 2,
     borderColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: '600',
   },
   content: {
     flex: 1,

@@ -2,10 +2,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import createContextHook from '@nkzw/create-context-hook';
 import { useEffect, useState } from 'react';
 
+interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: number;
+  read: boolean;
+}
+
 interface User {
   name: string;
   id: string;
   qrData: string;
+  notifications: Notification[];
 }
 
 interface AuthContextValue {
@@ -14,6 +23,8 @@ interface AuthContextValue {
   login: (name: string) => Promise<void>;
   logout: () => Promise<void>;
   regenerateQR: () => void;
+  unreadNotificationsCount: number;
+  markNotificationAsRead: (id: string) => void;
 }
 
 const AUTH_STORAGE_KEY = '@auth_user';
@@ -30,7 +41,21 @@ export const [AuthProvider, useAuth] = createContextHook<AuthContextValue>(() =>
     try {
       const stored = await AsyncStorage.getItem(AUTH_STORAGE_KEY);
       if (stored) {
-        setUser(JSON.parse(stored));
+        const parsedUser = JSON.parse(stored);
+        // Ensure notifications exist for existing users
+        if (!parsedUser.notifications) {
+          parsedUser.notifications = [
+            {
+              id: '1',
+              title: 'Welcome!',
+              message: 'Welcome back, ' + parsedUser.name,
+              timestamp: Date.now(),
+              read: false,
+            },
+          ];
+          await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(parsedUser));
+        }
+        setUser(parsedUser);
       }
     } catch (error) {
       console.error('Failed to load user:', error);
@@ -44,6 +69,22 @@ export const [AuthProvider, useAuth] = createContextHook<AuthContextValue>(() =>
       name,
       id: Date.now().toString(),
       qrData: `user:${name}:${Date.now()}`,
+      notifications: [
+        {
+          id: '1',
+          title: 'Welcome!',
+          message: 'Welcome to the app, ' + name,
+          timestamp: Date.now(),
+          read: false,
+        },
+        {
+          id: '2',
+          title: 'QR Code Generated',
+          message: 'Your QR code has been generated successfully.',
+          timestamp: Date.now() - 1000 * 60 * 5,
+          read: false,
+        },
+      ],
     };
     
     try {
@@ -76,11 +117,26 @@ export const [AuthProvider, useAuth] = createContextHook<AuthContextValue>(() =>
     }
   };
 
+  const markNotificationAsRead = (id: string) => {
+    if (user) {
+      const updatedNotifications = user.notifications.map(notif =>
+        notif.id === id ? { ...notif, read: true } : notif
+      );
+      const updatedUser = { ...user, notifications: updatedNotifications };
+      setUser(updatedUser);
+      AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));
+    }
+  };
+
+  const unreadNotificationsCount = user ? user.notifications.filter(n => !n.read).length : 0;
+
   return {
     user,
     isLoading,
     login,
     logout,
     regenerateQR,
+    unreadNotificationsCount,
+    markNotificationAsRead,
   };
 });

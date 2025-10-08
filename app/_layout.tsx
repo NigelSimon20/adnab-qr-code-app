@@ -16,6 +16,7 @@ function RootLayoutNav() {
       <Stack.Screen name="index" />
       <Stack.Screen name="login" />
       <Stack.Screen name="qr-code" />
+      <Stack.Screen name="notifications" />
     </Stack>
   );
 }
