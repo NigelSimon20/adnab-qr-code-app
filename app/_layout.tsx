@@ -17,6 +17,7 @@ function RootLayoutNav() {
       <Stack.Screen name="login" />
       <Stack.Screen name="qr-code" />
       <Stack.Screen name="notifications" />
+      <Stack.Screen name="qr-modal" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }

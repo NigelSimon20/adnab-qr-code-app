@@ -19,12 +19,12 @@ export default function NotificationsScreen() {
     return null;
   }
 
-  const handleMarkAsRead = (id: string) => {
-    markNotificationAsRead(id);
-  };
 
   const renderNotification = ({ item }: { item: any }) => (
-    <View style={styles.notificationItem}>
+    <TouchableOpacity
+      style={styles.notificationItem}
+      onPress={() => router.push({ pathname: '/notifications/[id]', params: { id: item.id } })}
+    >
       <View style={styles.notificationContent}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.message}>{item.message}</Text>
@@ -32,15 +32,8 @@ export default function NotificationsScreen() {
           {new Date(item.timestamp).toLocaleString()}
         </Text>
       </View>
-      {!item.read && (
-        <TouchableOpacity
-          style={styles.markAsReadButton}
-          onPress={() => handleMarkAsRead(item.id)}
-        >
-          <Ionicons name="checkmark-circle" size={24} color="#007AFF" />
-        </TouchableOpacity>
-      )}
-    </View>
+      {!item.read && <View style={styles.unreadIndicator} />}
+    </TouchableOpacity>
   );
 
   return (
@@ -112,7 +105,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999',
   },
-  markAsReadButton: {
-    padding: 8,
+  unreadIndicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#007AFF',
   },
 });

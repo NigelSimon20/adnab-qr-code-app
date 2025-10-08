@@ -39,9 +39,9 @@ export default function QRCodeScreen() {
       <View style={styles.content}>
         <Text style={styles.title}>{user.name}'s QR Code</Text>
 
-        <View style={styles.qrContainer}>
+        <TouchableOpacity style={styles.qrContainer} onPress={() => router.push('/qr-modal')}>
           <QRCode value={user.qrData} size={240} />
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={regenerateQR}>
