@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import createContextHook from '@nkzw/create-context-hook';
+import * as LocalAuthentication from 'expo-local-authentication';
 import { useEffect, useState } from 'react';
 
 interface Notification {
@@ -12,6 +13,7 @@ interface Notification {
 
 interface User {
   name: string;
+  password: string;
   id: string;
   qrData: string;
   notifications: Notification[];
@@ -20,7 +22,7 @@ interface User {
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
-  login: (name: string) => Promise<void>;
+  login: (name: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   regenerateQR: () => void;
   unreadNotificationsCount: number;
@@ -64,16 +66,17 @@ export const [AuthProvider, useAuth] = createContextHook<AuthContextValue>(() =>
     }
   };
 
-  const login = async (name: string) => {
+  const login = async (name: string, password: string) => {
     const newUser: User = {
       name,
+      password,
       id: Date.now().toString(),
       qrData: `user:${name}:${Date.now()}`,
       notifications: [
         {
           id: '1',
           title: 'Welcome!',
-          message: 'Welcome to the app, ' + name,
+          message: `Welcome to the app, ${name}!`,
           timestamp: Date.now(),
           read: false,
         },

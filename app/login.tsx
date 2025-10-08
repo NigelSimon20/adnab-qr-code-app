@@ -26,7 +26,7 @@ export default function LoginScreen() {
 
     setIsLoggingIn(true);
     try {
-      await login(name.trim());
+      await login(name.trim(), name.trim()); // Use name as password
       router.replace('/qr-code');
     } catch (error) {
       console.error('Login failed:', error);
