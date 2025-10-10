@@ -27,7 +27,7 @@ export default function QRCodeScreen() {
         </View>
 
         <TouchableOpacity style={styles.notificationButton} onPress={() => router.push('/notifications')}>
-          <Ionicons name="notifications" size={24} color="#000" />
+          <Ionicons name="notifications" size={28} color="#000" />
           {unreadNotificationsCount > 0 && (
             <View style={styles.badge}>
               <Text style={styles.badgeText}>{unreadNotificationsCount}</Text>
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   logoImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     resizeMode: 'contain',
   },
   notificationButton: {
