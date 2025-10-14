@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.user-qr-code-app"
+      "package": "com.nijosimon.qrcode"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -37,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": "https://rork.com/"
+      },
+      "eas": {
+        "projectId": "026d5207-2ec9-4bd8-a961-921dd5f7597a"
+      }
     }
   }
 }
