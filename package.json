@@ -1,11 +1,11 @@
 {
-  "name": "expo-app",
+  "name": "adnab-events-app",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "bunx rork start -p yxhtanauro99lu52xhp73 --tunnel",
-    "start-web": "bunx rork start -p yxhtanauro99lu52xhp73 --web --tunnel",
-    "start-web-dev": "DEBUG=expo* bunx rork start -p yxhtanauro99lu52xhp73 --web --tunnel",
+    "start": "expo start",
+    "start-web": "expo start --web",
+    "start-web-dev": "DEBUG=expo* expo start --web",
     "lint": "expo lint"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "expo-linking": "~8.0.8",
     "expo-local-authentication": "^17.0.7",
     "expo-location": "~19.0.7",
+    "expo-media-library": "^18.2.0",
     "expo-router": "~6.0.10",
     "expo-splash-screen": "~31.0.10",
     "expo-status-bar": "~3.0.8",
@@ -43,6 +44,7 @@
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
     "react-native-svg": "15.12.1",
+    "react-native-view-shot": "^4.0.3",
     "react-native-web": "^0.21.0",
     "zustand": "^5.0.2"
   },

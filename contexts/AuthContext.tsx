@@ -13,6 +13,7 @@ interface Notification {
 
 interface User {
   name: string;
+  first_name: string;
   password: string;
   id: string;
   qrData: string;
@@ -22,7 +23,7 @@ interface User {
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
-  login: (name: string, password: string) => Promise<void>;
+  login: (name: string, password: string, first_name?: string) => Promise<void>;
   logout: () => Promise<void>;
   regenerateQR: () => void;
   unreadNotificationsCount: number;
@@ -66,12 +67,13 @@ export const [AuthProvider, useAuth] = createContextHook<AuthContextValue>(() =>
     }
   };
 
-  const login = async (name: string, password: string) => {
+  const login = async (name: string, password: string, first_name?: string) => {
     const newUser: User = {
       name,
+      first_name: first_name || name,
       password,
       id: Date.now().toString(),
-      qrData: `user:${name}:${Date.now()}`,
+      qrData: `user:${first_name || name}:${Date.now()}`,
       notifications: [
         {
           id: '1',
@@ -113,7 +115,7 @@ export const [AuthProvider, useAuth] = createContextHook<AuthContextValue>(() =>
     if (user) {
       const updatedUser: User = {
         ...user,
-        qrData: `user:${user.name}:${Date.now()}`,
+        qrData: `user:${user.first_name}:${Date.now()}`,
       };
       setUser(updatedUser);
       AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));

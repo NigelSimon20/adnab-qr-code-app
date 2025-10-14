@@ -11,7 +11,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as LocalAuthentication from 'expo-local-authentication'; 
+import * as LocalAuthentication from 'expo-local-authentication';
+import { StatusBar } from 'expo-status-bar';
 
 export default function IndexScreen() {
   const { user, isLoading } = useAuth();
@@ -57,6 +58,7 @@ export default function IndexScreen() {
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar style="dark" />
         <ActivityIndicator size="large" color="#000" />
       </SafeAreaView>
     );
@@ -69,6 +71,7 @@ export default function IndexScreen() {
     if (showPasswordInput) {
       return (
         <SafeAreaView style={styles.container}>
+          <StatusBar style="dark" />
           <Text style={styles.title}>Enter your name</Text>
           <TextInput
             style={styles.input}
@@ -88,6 +91,7 @@ export default function IndexScreen() {
     // Show loading while biometric is being attempted
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar style="dark" />
         <ActivityIndicator size="large" color="#000" />
         <Text style={styles.title}>Authenticating...</Text>
       </SafeAreaView>

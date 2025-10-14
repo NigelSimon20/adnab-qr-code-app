@@ -1,25 +1,49 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import * as MediaLibrary from 'expo-media-library';
+import { captureRef } from 'react-native-view-shot';
 
 export default function QRModalScreen() {
   const { user } = useAuth();
   const router = useRouter();
+  const qrRef = useRef<View>(null);
 
   if (!user) {
     return null;
   }
 
-  const handleDownload = () => {
-    Alert.alert('Download Complete', 'QR code has been downloaded to your device!');
+  const handleDownload = async () => {
+    try {
+      if (qrRef.current) {
+        const { status } = await MediaLibrary.requestPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Permission needed', 'Please grant permission to save images');
+          return;
+        }
+
+        const uri = await captureRef(qrRef, {
+          format: 'png',
+          quality: 1,
+        });
+
+        await MediaLibrary.saveToLibraryAsync(uri);
+        Alert.alert('Download Complete', 'QR code has been saved to your photo library!');
+      }
+    } catch (error) {
+      console.error('Download failed:', error);
+      Alert.alert('Error', 'Failed to download QR code');
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="dark" />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="close" size={24} color="#000" />
@@ -28,9 +52,9 @@ export default function QRModalScreen() {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.title}>{user.name}'s QR Code</Text>
+        <Text style={styles.title}>{user.first_name}'s QR Code</Text>
 
-        <View style={styles.qrContainer}>
+        <View ref={qrRef} style={styles.qrContainer}>
           <QRCode
             value={user.qrData}
             size={280}
